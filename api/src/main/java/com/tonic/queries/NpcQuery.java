@@ -6,6 +6,7 @@ import com.tonic.services.GameManager;
 import com.tonic.util.TextUtil;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * A query class to filter and retrieve NPCs based on various criteria.
@@ -20,6 +21,8 @@ public class NpcQuery extends AbstractActorQuery<NpcEx, NpcQuery>
         super(GameManager.npcList());
     }
 
+    public NpcQuery withId(int id) { return keepIf(n -> n.getId() == id);}
+
     /**
      * Filters NPCs by their IDs.
      *
@@ -28,17 +31,7 @@ public class NpcQuery extends AbstractActorQuery<NpcEx, NpcQuery>
      */
     public NpcQuery withIds(int... ids)
     {
-        return keepIf(n -> {
-            int npcId = n.getId();
-            for (int id : ids)
-            {
-                if (npcId == id)
-                {
-                    return true;
-                }
-            }
-            return false;
-        });
+        return keepIf(n -> ArrayUtils.contains(ids, n.getId()));
     }
 
     /**

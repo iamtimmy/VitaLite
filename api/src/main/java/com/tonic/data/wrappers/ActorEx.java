@@ -218,6 +218,21 @@ public abstract class ActorEx<T extends Actor> implements Entity
         return Orientation.of(this);
     }
 
+    public int getActionIndex(String action)
+    {
+        String[] actions = getActions();
+        for(int i = 0; i < actions.length; i++)
+        {
+            if(actions[i] == null)
+                continue;
+
+            if(actions[i].equalsIgnoreCase(action))
+                return i;
+        }
+
+        return -1;
+    }
+
     @Override
     public boolean equals(Object obj)
     {

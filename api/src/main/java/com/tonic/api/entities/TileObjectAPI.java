@@ -142,14 +142,9 @@ public class TileObjectAPI
     }
 
     private static int getAction(TileObject object, String action) {
-        String[] actions = getActions(object);
-        for(int i = 0; i < actions.length; i++)
-        {
-            if(actions[i] == null)
-                continue;
-            if(!actions[i].toLowerCase().contains(action.toLowerCase()))
-                continue;
-            return i;
+        var objectEx = TileObjectEx.of(object);
+        if(objectEx != null) {
+            return objectEx.getActionIndex(action);
         }
         return -1;
     }
@@ -191,6 +186,6 @@ public class TileObjectAPI
      */
     public static TileObjectEx get(int... ids)
     {
-        return Static.invoke(() -> search().withId(ids).sortNearest().first());
+        return Static.invoke(() -> search().withIds(ids).sortNearest().first());
     }
 }

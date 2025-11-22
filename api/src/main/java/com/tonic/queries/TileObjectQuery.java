@@ -6,13 +6,12 @@ import com.tonic.queries.abstractions.AbstractQuery;
 import com.tonic.services.GameManager;
 import com.tonic.data.wrappers.TileObjectEx;
 import com.tonic.util.Distance;
-import com.tonic.util.Location;
 import com.tonic.util.TextUtil;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 import org.apache.commons.lang3.ArrayUtils;
-import java.awt.geom.Point2D;
+
 import java.util.List;
 
 /**
@@ -28,6 +27,8 @@ public class TileObjectQuery extends AbstractQuery<TileObjectEx, TileObjectQuery
         super(GameManager.objectList());
     }
 
+    public TileObjectQuery withId(int id) { return keepIf(o -> o.getId() == id);}
+
     public TileObjectQuery fromWorldView()
     {
         return keepIf(o -> o.getWorldViewId() == PlayerEx.getLocal().getWorldViewId());
@@ -35,12 +36,12 @@ public class TileObjectQuery extends AbstractQuery<TileObjectEx, TileObjectQuery
 
     /**
      * Filters the query to only include objects with the specified IDs.
-     * @param id The IDs to filter by.
+     * @param ids The IDs to filter by.
      * @return TileObjectQuery
      */
-    public TileObjectQuery withId(int... id)
+    public TileObjectQuery withIds(int... ids)
     {
-        return removeIf(o -> !ArrayUtils.contains(id, o.getId()));
+        return keepIf(o -> ArrayUtils.contains(ids, o.getId()));
     }
 
     /**
